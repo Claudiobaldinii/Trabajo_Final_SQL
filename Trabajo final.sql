@@ -4,7 +4,6 @@
 -- Máster en Análisis de Datos - ThePower School
 -- ------------------------------------------------------
 -- Cada consulta está numerada y precedida de su enunciado como comentario.
--- Escribe tu código SQL debajo de cada bloque.
 -- ------------------------------------------------------
 
 
