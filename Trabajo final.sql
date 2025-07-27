@@ -354,13 +354,13 @@ cross join category c
 
 -- 45. Encuentra los actores que han participado en películas de la categoría 'Action'.
 
-select first_name , last_name , "name" 
+select first_name , last_name , c.name
 from actor a 
 join film_actor fa on fa.actor_id = a.actor_id
 join film on film.film_id = fa.film_id
 join film_category fc on fc.film_id = film.film_id
 join category c on c.category_id = fc.category_id
-where name = 'Action'
+where c.name = 'Action'
 
 -- 46. Encuentra todos los actores que no han participado en películas.
 
@@ -543,14 +543,14 @@ order by f.title;
 
 -- 60. Encuentra clientes que han alquilado al menos 7 películas distintas.
 
-select first_name , last_name , count (distinct f.film_id ) as Peliculas_Alquiladas
+SELECT c.customer_id, c.first_name, c.last_name, COUNT(DISTINCT f.film_id) AS peliculas_distintas
 FROM customer c
 JOIN rental r ON c.customer_id = r.customer_id
 JOIN inventory i ON r.inventory_id = i.inventory_id
 JOIN film f ON i.film_id = f.film_id
-group by c.first_name , c.last_name 
-having count(f.film_id ) >= 7
-order by count(f.film_id) asc;
+GROUP BY c.customer_id, c.first_name, c.last_name
+HAVING COUNT(DISTINCT f.film_id) >= 7
+ORDER BY c.last_name ASC;
 
 
 -- 61. Encuentra cantidad total de películas alquiladas por categoría.
