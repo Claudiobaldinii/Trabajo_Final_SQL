@@ -37,7 +37,9 @@ WHERE actor_id >= 30 AND actor_id <= 40;
 
 SELECT title
 FROM film
-WHERE language_id = original_language_id; --El columna del lenguaje original solo tiene valors null--
+WHERE original_language_id IS NOT NULL
+  AND language_id = original_language_id;
+ --El columna del lenguaje original solo tiene valors null--
 
 
 -- 5. Ordena las películas por duración de forma ascendente.
@@ -123,10 +125,11 @@ FROM payment p;
 
 -- 16. Muestra los 10 clientes con mayor valor de id.
 
-select concat(first_name , ' ', last_name) as clientes_mayor_valor_id
-from customer c  
-order by customer_id desc
-limit 10
+SELECT customer_id, first_name || ' ' || last_name AS nombre_completo
+FROM customer
+ORDER BY customer_id DESC
+LIMIT 10;
+
 
 -- 17. Encuentra el nombre y apellido de los actores que aparecen en la película con título ‘Egg Igby’.
 
@@ -269,11 +272,13 @@ ORDER BY f.title;
 
 -- 34. Encuentra los 5 clientes que más dinero se hayan gastado con nosotros.
 
-SELECT f.title, r.rental_date
-FROM film f
-LEFT JOIN inventory i ON f.film_id = i.film_id
-LEFT JOIN rental r ON i.inventory_id = r.inventory_id
-ORDER BY f.title;
+SELECT c.first_name, c.last_name, SUM(p.amount) AS total_gastado
+FROM customer c
+JOIN payment p ON c.customer_id = p.customer_id
+GROUP BY c.customer_id, c.first_name, c.last_name
+ORDER BY total_gastado DESC
+LIMIT 5;
+
 
 
 -- 35. Selecciona todos los actores cuyo primer nombre es 'Johnny'.
@@ -595,5 +600,5 @@ JOIN rental r ON c.customer_id = r.customer_id
 JOIN inventory i ON r.inventory_id = i.inventory_id
 JOIN film f ON i.film_id = f.film_id
 group by c.first_name , c.last_name , c.customer_id 
-order by c.first_name 
+ORDER BY cantidad_alquiler DESC; 
 
